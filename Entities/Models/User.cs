@@ -10,5 +10,6 @@ public class User
     public Post[]? LikedPosts { get; set; }
     public Comment[]? Comments { get; set; }
     public Comment[]? LikedComments { get; set; }
-    public Roles Roles { get; set; } = Roles.Guest;
+    public Roles Roles { get; set; } = Roles.User;
+    public DateTime RegistrationDate { get; set; }
 }
