@@ -1,6 +1,4 @@
-﻿using Entities.Models;
-
-namespace Entities.DataTransferObjects.CommentDto;
+﻿namespace Contracts.CommentDto;
 
 public class CommentForReadDto
 {

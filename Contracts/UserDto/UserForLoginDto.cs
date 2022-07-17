@@ -1,4 +1,4 @@
-﻿namespace Entities.DataTransferObjects.UserDto;
+﻿namespace Contracts.UserDto;
 
 public class UserForLoginDto
 {

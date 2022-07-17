@@ -1,4 +1,4 @@
-﻿namespace Entities.DataTransferObjects.PostDto;
+﻿namespace Contracts.PostDto;
 
 public class PostForUpdateDto
 {

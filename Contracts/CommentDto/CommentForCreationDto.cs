@@ -1,4 +1,4 @@
-﻿namespace Entities.DataTransferObjects.CommentDto;
+﻿namespace Contracts.CommentDto;
 
 public class CommentForCreationDto
 {
