@@ -11,5 +11,6 @@ public class Post
     public string Text { get; set; } = string.Empty;
     public int LikesCount { get; set; } = 0;
     public List<Comment>? Comments { get; set; }
+    public int CommentsCount { get; set; } = 0;
     public int Views { get; set; } = 0;
 }
