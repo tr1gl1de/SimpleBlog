@@ -10,5 +10,5 @@ public class Comment
     public string Text { get; set; } = string.Empty;
     public int LikesCount { get; set; } = 0;
     public Guid? ParentCommentId { get; set; }
-    public Comment[]? ChildrenComments { get; set; }
+    public List<Comment>? ChildrenComments { get; set; }
 }
