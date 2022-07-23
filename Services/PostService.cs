@@ -50,12 +50,13 @@ public class PostService : IPostService
         throw new NotImplementedException();
     }
 
-    public Task UpdatePostByIdAsync(Guid postId, PostForUpdateDto postForUpdate, CancellationToken cancellationToken = default)
+    public Task UpdatePostByIdAsync(Guid postId, string usernameCreator, PostForUpdateDto postForUpdate,
+        CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    public Task DeletePostByIdAsync(Guid postId, CancellationToken cancellationToken = default)
+    public Task DeletePostByIdAsync(Guid postId, string usernameCreator, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
