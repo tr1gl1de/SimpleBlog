@@ -15,9 +15,11 @@ public class PostService : IPostService
         _repositoryManager = repositoryManager;
     }
     
-    public async Task<PostForReadDto> CreatePostAsync(PostForCreationDto postForCreation, CancellationToken cancellationToken = default)
+    public async Task<PostForReadDto> CreatePostAsync(PostForCreationDto postForCreation, string usernameCreator,
+        CancellationToken cancellationToken = default)
     {
         var post = postForCreation.Adapt<Post>();
+        post.UsernameCreator = usernameCreator;
         _repositoryManager.PostRepository.Insert(post);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         return post.Adapt<PostForReadDto>();
