@@ -7,12 +7,21 @@ using Entities.Models;
 using Moq;
 using Repositories;
 using Services;
+using Services.Abstract;
 using Xunit;
 
 namespace Tests.ServicesTests;
 
 public class PostServiceTests
 {
+    private readonly IPostService _postService;
+    private readonly Mock<IRepositoryManager> _mockRepos;
+
+    public PostServiceTests()
+    {
+        _mockRepos = new Mock<IRepositoryManager>();
+        _postService = new PostService(_mockRepos.Object);
+    }
 
     [Fact]
     public async Task CreatePostAsync_InputPostForCreate_ReturnPostForReadType()
@@ -25,14 +34,12 @@ public class PostServiceTests
             Tags = new List<string>() { "other" },
             Text = "some text"
         };
-        var repositoryMock = new Mock<IRepositoryManager>();
-        repositoryMock
+        _mockRepos
             .Setup(manager => manager.PostRepository.Insert(It.IsAny<Post>()));
-        repositoryMock
+        _mockRepos
             .Setup(manager => manager.UnitOfWork.SaveChangesAsync(It.IsAny<CancellationToken>()));
-        var fakePostService = new PostService(repositoryMock.Object);
         // Act
-        var result = await fakePostService.CreatePostAsync(expectedPostForCreate, expectedUsername);
+        var result = await _postService.CreatePostAsync(expectedPostForCreate, expectedUsername);
         // Assert
         Assert.IsType<PostForReadDto>(result);
     }
@@ -51,41 +58,19 @@ public class PostServiceTests
         var expectedPostForRead = new PostForReadDto()
         {
             Name = expectedPostForCreate.Name,
-            // Name = "not valid name",
             Tags = expectedPostForCreate.Tags,
             Text = expectedPostForCreate.Text,
             UsernameCreator = expectedUsername,
             CreateDate = DateTime.UtcNow.Date,
         };
-        var repositoryMock = new Mock<IRepositoryManager>();
-        repositoryMock
+        _mockRepos
             .Setup(manager => manager.PostRepository.Insert(It.IsAny<Post>()));
-        repositoryMock
+        _mockRepos
             .Setup(manager => manager.UnitOfWork.SaveChangesAsync(It.IsAny<CancellationToken>()));
-        var fakePostService = new PostService(repositoryMock.Object);
         // Act
-        var result = await fakePostService.CreatePostAsync(expectedPostForCreate, expectedUsername);
+        var result = await _postService.CreatePostAsync(expectedPostForCreate, expectedUsername);
         result.CreateDate = result.CreateDate.Date;
         // Assert
-        AssertAllPropertiesEqual(expectedPostForRead, result);
-    }
-
-    
-    private void AssertAllPropertiesEqual<T>(T expectObject, T actualObject)
-    {
-        Type type = typeof(T);
-
-        var propertiesInfoOfType = type.GetProperties();
-
-        foreach (var prop in propertiesInfoOfType)
-        {
-            if (prop.GetIndexParameters().Length == 0)
-            {
-                var propActualObjValue = prop.GetValue(actualObject);
-                var propExpectObjValue = prop.GetValue(expectObject);
-                
-                Assert.Equal(propExpectObjValue, propActualObjValue);
-            }
-        }
+        TestUtils.AssertAllPropertiesEqual(expectedPostForRead, result);
     }
 }
