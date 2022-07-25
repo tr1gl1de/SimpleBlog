@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
 using Contracts.PostDto;
@@ -72,5 +73,26 @@ public class PostServiceTests
         result.CreateDate = result.CreateDate.Date;
         // Assert
         TestUtils.AssertAllPropertiesEqual(expectedPostForRead, result);
+    }
+
+    [Fact]
+    public async Task CreatePostAsync_InputPostForReadCreateEmpty_ReturnValidateException()
+    {
+        // Arrange
+        string expectedUsername = "";
+        var expectedPostForCreate = new PostForCreationDto()
+        {
+            Name = "",
+            Tags = new List<string>() { "" },
+            Text = ""
+        };
+        _mockRepos
+            .Setup(manager => manager.PostRepository.Insert(It.IsAny<Post>()));
+        _mockRepos
+            .Setup(manager => manager.UnitOfWork.SaveChangesAsync(It.IsAny<CancellationToken>()));
+        // Act
+        Action action = async () => await _postService.CreatePostAsync(expectedPostForCreate, expectedUsername);
+        // Assert
+        Assert.Throws<ValidationException>(action);
     }
 }
