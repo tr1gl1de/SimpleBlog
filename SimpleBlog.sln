@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Servic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{FC543B91-5A2B-435F-8B94-17F9C5247748}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityValidators", "EntityValidators\EntityValidators.csproj", "{F40601AF-FA37-41A7-B903-43B6B03A4CF8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,5 +50,9 @@ Global
 		{FC543B91-5A2B-435F-8B94-17F9C5247748}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC543B91-5A2B-435F-8B94-17F9C5247748}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC543B91-5A2B-435F-8B94-17F9C5247748}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F40601AF-FA37-41A7-B903-43B6B03A4CF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F40601AF-FA37-41A7-B903-43B6B03A4CF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F40601AF-FA37-41A7-B903-43B6B03A4CF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F40601AF-FA37-41A7-B903-43B6B03A4CF8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
