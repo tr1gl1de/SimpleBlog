@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
 using Contracts.PostDto;
 using Entities.Models;
+using EntityValidators;
 using Moq;
 using Repositories;
 using Services;
@@ -21,7 +21,8 @@ public class PostServiceTests
     public PostServiceTests()
     {
         _mockRepos = new Mock<IRepositoryManager>();
-        _postService = new PostService(_mockRepos.Object);
+        var validatorManager = new ValidatorManager();
+        _postService = new PostService(_mockRepos.Object, validatorManager);
     }
 
     [Fact]
@@ -91,8 +92,12 @@ public class PostServiceTests
         _mockRepos
             .Setup(manager => manager.UnitOfWork.SaveChangesAsync(It.IsAny<CancellationToken>()));
         // Act
-        Action action = async () => await _postService.CreatePostAsync(expectedPostForCreate, expectedUsername);
+        Func<Task> throwingAction = async () =>
+        {
+            await _postService.CreatePostAsync(expectedPostForCreate, expectedUsername);
+        };
+        
         // Assert
-        Assert.Throws<ValidationException>(action);
+        await Assert.ThrowsAsync<FluentValidation.ValidationException>(throwingAction);
     }
 }
