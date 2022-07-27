@@ -1,5 +1,7 @@
 ﻿using Contracts.PostDto;
 using Entities.Models;
+using EntityValidators;
+using FluentValidation;
 using Mapster;
 using Repositories;
 using Services.Abstract;
@@ -9,15 +11,18 @@ namespace Services;
 public class PostService : IPostService
 {
     private readonly IRepositoryManager _repositoryManager;
+    private readonly ValidatorManager _validatorManager;
 
-    public PostService(IRepositoryManager repositoryManager)
+    public PostService(IRepositoryManager repositoryManager, ValidatorManager validatorManager)
     {
         _repositoryManager = repositoryManager;
+        _validatorManager = validatorManager;
     }
     
     public async Task<PostForReadDto> CreatePostAsync(PostForCreationDto postForCreation, string usernameCreator,
         CancellationToken cancellationToken = default)
     {
+        await _validatorManager.PostForCreateValidator.ValidateAndThrowAsync(postForCreation, cancellationToken);
         var post = postForCreation.Adapt<Post>();
         post.UsernameCreator = usernameCreator;
         _repositoryManager.PostRepository.Insert(post);
