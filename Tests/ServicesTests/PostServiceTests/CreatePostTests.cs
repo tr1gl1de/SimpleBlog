@@ -12,14 +12,14 @@ using Services;
 using Services.Abstract;
 using Xunit;
 
-namespace Tests.ServicesTests;
+namespace Tests.ServicesTests.PostServiceTests;
 
-public class PostServiceTests
+public class CreatePostTests
 {
     private readonly IPostService _postService;
     private readonly Mock<IRepositoryManager> _mockRepos;
 
-    public PostServiceTests()
+    public CreatePostTests()
     {
         _mockRepos = new Mock<IRepositoryManager>();
         var validatorManager = new ValidatorManager();
