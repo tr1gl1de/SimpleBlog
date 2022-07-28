@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Contracts.PostDto;
+using Contracts.UserDto;
 using Entities.Models;
 using EntityValidators;
 using Moq;
@@ -29,7 +30,11 @@ public class PostServiceTests
     public async Task CreatePostAsync_InputPostForCreate_ReturnPostForReadType()
     {
         // Arrange
-        string expectedUsername = "username";
+        var expectedUser = new UserForReadDto()
+        {
+            Username = "Username",
+            Displayname = "displayName"
+        };
         var expectedPostForCreate = new PostForCreationDto()
         {
             Name = "First post",
@@ -41,7 +46,7 @@ public class PostServiceTests
         _mockRepos
             .Setup(manager => manager.UnitOfWork.SaveChangesAsync(It.IsAny<CancellationToken>()));
         // Act
-        var result = await _postService.CreatePostAsync(expectedPostForCreate, expectedUsername);
+        var result = await _postService.CreatePostAsync(expectedPostForCreate, expectedUser);
         // Assert
         Assert.IsType<PostForReadDto>(result);
     }
@@ -50,7 +55,12 @@ public class PostServiceTests
     public async Task CreatePostAsync_InputPostForCreate_ReturnPostForRead()
     {
         // Arrange
-        string expectedUsername = "username";
+        var expectedUser = new UserForReadDto()
+        {
+            Username = "Username",
+            Displayname = "displayName"
+        };
+        
         var expectedPostForCreate = new PostForCreationDto()
         {
             Name = "First post",
@@ -62,7 +72,7 @@ public class PostServiceTests
             Name = expectedPostForCreate.Name,
             Tags = expectedPostForCreate.Tags,
             Text = expectedPostForCreate.Text,
-            UsernameCreator = expectedUsername,
+            UsernameCreator = expectedUser.Username,
             CreateDate = DateTime.UtcNow.Date,
         };
         _mockRepos
@@ -70,17 +80,22 @@ public class PostServiceTests
         _mockRepos
             .Setup(manager => manager.UnitOfWork.SaveChangesAsync(It.IsAny<CancellationToken>()));
         // Act
-        var result = await _postService.CreatePostAsync(expectedPostForCreate, expectedUsername);
+        var result = await _postService.CreatePostAsync(expectedPostForCreate, expectedUser);
         result.CreateDate = result.CreateDate.Date;
         // Assert
         TestUtils.AssertAllPropertiesEqual(expectedPostForRead, result);
     }
 
     [Fact]
-    public async Task CreatePostAsync_InputPostForReadCreateEmpty_ReturnValidateException()
+    public async Task CreatePostAsync_InputPostForCreateEmpty_ReturnValidateException()
     {
         // Arrange
-        string expectedUsername = "";
+        var expectedUser = new UserForReadDto()
+        {
+            Username = "Username",
+            Displayname = "displayName"
+        };
+        
         var expectedPostForCreate = new PostForCreationDto()
         {
             Name = "",
@@ -94,7 +109,36 @@ public class PostServiceTests
         // Act
         Func<Task> throwingAction = async () =>
         {
-            await _postService.CreatePostAsync(expectedPostForCreate, expectedUsername);
+            await _postService.CreatePostAsync(expectedPostForCreate, expectedUser);
+        };
+        
+        // Assert
+        await Assert.ThrowsAsync<FluentValidation.ValidationException>(throwingAction);
+    }
+
+    [Fact]
+    public async Task CreatePostAsync_InputPostForCreateWithEmptyUsername_ReturnValidateException()
+    {
+        var expectedUser = new UserForReadDto()
+        {
+            Username = "",
+            Displayname = "displayName"
+        };
+        
+        var expectedPostForCreate = new PostForCreationDto()
+        {
+            Name = "First post",
+            Tags = new List<string>() { "tag" },
+            Text = "Lorem"
+        };
+        _mockRepos
+            .Setup(manager => manager.PostRepository.Insert(It.IsAny<Post>()));
+        _mockRepos
+            .Setup(manager => manager.UnitOfWork.SaveChangesAsync(It.IsAny<CancellationToken>()));
+        // Act
+        Func<Task> throwingAction = async () =>
+        {
+            await _postService.CreatePostAsync(expectedPostForCreate, expectedUser);
         };
         
         // Assert
