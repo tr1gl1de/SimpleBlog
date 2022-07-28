@@ -1,4 +1,5 @@
 ﻿using Contracts.PostDto;
+using Contracts.UserDto;
 using Entities.Models;
 using EntityValidators;
 using FluentValidation;
@@ -19,12 +20,12 @@ public class PostService : IPostService
         _validatorManager = validatorManager;
     }
     
-    public async Task<PostForReadDto> CreatePostAsync(PostForCreationDto postForCreation, string usernameCreator,
+    public async Task<PostForReadDto> CreatePostAsync(PostForCreationDto postForCreation, UserForReadDto user,
         CancellationToken cancellationToken = default)
     {
         await _validatorManager.PostForCreateValidator.ValidateAndThrowAsync(postForCreation, cancellationToken);
         var post = postForCreation.Adapt<Post>();
-        post.UsernameCreator = usernameCreator;
+        post.UsernameCreator = user.Username;
         _repositoryManager.PostRepository.Insert(post);
         await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
         return post.Adapt<PostForReadDto>();

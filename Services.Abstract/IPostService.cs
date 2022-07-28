@@ -1,10 +1,12 @@
 ﻿using Contracts.PostDto;
+using Contracts.UserDto;
 
 namespace Services.Abstract;
 
 public interface IPostService
 {
-    Task<PostForReadDto> CreatePostAsync(PostForCreationDto postForCreation, string usernameCreator, CancellationToken cancellationToken = default);
+    Task<PostForReadDto> CreatePostAsync(PostForCreationDto postForCreation, UserForReadDto user
+        , CancellationToken cancellationToken = default);
     Task<PostForReadDto> GetPostByIdAsync(Guid postId, CancellationToken cancellationToken = default);
     Task<IEnumerable<PostForReadDto>> GetAllPostsAsync(CancellationToken cancellationToken = default);
 
