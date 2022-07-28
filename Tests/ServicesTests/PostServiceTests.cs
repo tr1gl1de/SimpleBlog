@@ -115,4 +115,33 @@ public class PostServiceTests
         // Assert
         await Assert.ThrowsAsync<FluentValidation.ValidationException>(throwingAction);
     }
+
+    [Fact]
+    public async Task CreatePostAsync_InputPostForCreateWithEmptyUsername_ReturnValidateException()
+    {
+        var expectedUser = new UserForReadDto()
+        {
+            Username = "",
+            Displayname = "displayName"
+        };
+        
+        var expectedPostForCreate = new PostForCreationDto()
+        {
+            Name = "First post",
+            Tags = new List<string>() { "tag" },
+            Text = "Lorem"
+        };
+        _mockRepos
+            .Setup(manager => manager.PostRepository.Insert(It.IsAny<Post>()));
+        _mockRepos
+            .Setup(manager => manager.UnitOfWork.SaveChangesAsync(It.IsAny<CancellationToken>()));
+        // Act
+        Func<Task> throwingAction = async () =>
+        {
+            await _postService.CreatePostAsync(expectedPostForCreate, expectedUser);
+        };
+        
+        // Assert
+        await Assert.ThrowsAsync<FluentValidation.ValidationException>(throwingAction);
+    }
 }
