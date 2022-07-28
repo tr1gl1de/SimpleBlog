@@ -24,6 +24,7 @@ public class PostService : IPostService
         CancellationToken cancellationToken = default)
     {
         await _validatorManager.PostForCreateValidator.ValidateAndThrowAsync(postForCreation, cancellationToken);
+        await _validatorManager.UserForReadValidator.ValidateAndThrowAsync(user, cancellationToken);
         var post = postForCreation.Adapt<Post>();
         post.UsernameCreator = user.Username;
         _repositoryManager.PostRepository.Insert(post);
