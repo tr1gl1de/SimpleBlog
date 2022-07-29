@@ -140,6 +140,17 @@ internal static class CreatePostDataTests
     };
 
     
+    public static IEnumerable<object[]> GetValidPostAndUser()
+    {
+        foreach (var (post, user) in ValidPostForCreation.Zip(ValidUserForRead))
+        {
+            yield return new object[]
+            {
+                post, user
+            };
+        }
+    }
+
     public static IEnumerable<object[]> GetInvalidUserAndValidPost()
     {
         foreach (var (post, user) in ValidPostForCreation.Zip(NullAndEmptyUser))
