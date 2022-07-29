@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Contracts.PostDto;
@@ -26,53 +25,34 @@ public class CreatePostTests
         _postService = new PostService(_mockRepos.Object, validatorManager);
     }
 
-    [Fact]
-    public async Task CreatePostAsync_InputPostForCreate_ReturnPostForReadType()
+    [Theory]
+    [MemberData(nameof(CreatePostDataTests.GetValidPostAndUser), MemberType = typeof(CreatePostDataTests))]
+    public async Task CreatePostAsync_InputPostForCreate_ReturnPostForReadType(PostForCreationDto expectPost,
+        UserForReadDto expectUser)
     {
         // Arrange
-        var expectedUser = new UserForReadDto()
-        {
-            Username = "Username",
-            Displayname = "displayName"
-        };
-        var expectedPostForCreate = new PostForCreationDto()
-        {
-            Name = "First post",
-            Tags = new List<string>() { "other" },
-            Text = "some text"
-        };
         _mockRepos
             .Setup(manager => manager.PostRepository.Insert(It.IsAny<Post>()));
         _mockRepos
             .Setup(manager => manager.UnitOfWork.SaveChangesAsync(It.IsAny<CancellationToken>()));
         // Act
-        var result = await _postService.CreatePostAsync(expectedPostForCreate, expectedUser);
+        var result = await _postService.CreatePostAsync(expectPost, expectUser);
         // Assert
         Assert.IsType<PostForReadDto>(result);
     }
     
-    [Fact]
-    public async Task CreatePostAsync_InputPostForCreate_ReturnPostForRead()
+    [Theory]
+    [MemberData(nameof(CreatePostDataTests.GetValidPostAndUser), MemberType = typeof(CreatePostDataTests))]
+    public async Task CreatePostAsync_InputPostForCreate_ReturnPostForRead(PostForCreationDto expectPost,
+        UserForReadDto expectUser)
     {
         // Arrange
-        var expectedUser = new UserForReadDto()
-        {
-            Username = "Username",
-            Displayname = "displayName"
-        };
-        
-        var expectedPostForCreate = new PostForCreationDto()
-        {
-            Name = "First post",
-            Tags = new List<string>() { "other" },
-            Text = "some text"
-        };
         var expectedPostForRead = new PostForReadDto()
         {
-            Name = expectedPostForCreate.Name,
-            Tags = expectedPostForCreate.Tags,
-            Text = expectedPostForCreate.Text,
-            UsernameCreator = expectedUser.Username,
+            Name = expectPost.Name,
+            Tags = expectPost.Tags,
+            Text = expectPost.Text,
+            UsernameCreator = expectUser.Username,
             CreateDate = DateTime.UtcNow.Date,
         };
         _mockRepos
@@ -80,7 +60,7 @@ public class CreatePostTests
         _mockRepos
             .Setup(manager => manager.UnitOfWork.SaveChangesAsync(It.IsAny<CancellationToken>()));
         // Act
-        var result = await _postService.CreatePostAsync(expectedPostForCreate, expectedUser);
+        var result = await _postService.CreatePostAsync(expectPost, expectUser);
         result.CreateDate = result.CreateDate.Date;
         // Assert
         TestUtils.AssertAllPropertiesEqual(expectedPostForRead, result);
