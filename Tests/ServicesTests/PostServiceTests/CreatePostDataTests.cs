@@ -16,69 +16,47 @@ internal enum Counts
 internal static class CreatePostDataTests
 {
     private static readonly Faker Faker = new("en");
+    
+    #region Methods
 
-    private static IEnumerable<UserForReadDto> ValidUserForRead { get; } = new List<UserForReadDto>()
+    private static IEnumerable<UserForReadDto> GeneratorValidUserForRead(int lenght)
     {
-        new()
+        var result = new List<UserForReadDto>();
+        for (int i = 0; i < lenght; i++)
         {
-            Username = Faker.Internet.UserName(),
-            Displayname = Faker.Name.FirstName()
-        },
-        new()
-        {
-            Username = Faker.Internet.UserName(),
-            Displayname = Faker.Name.FirstName()
-        },
-        new()
-        {
-            Username = Faker.Internet.UserName(),
-            Displayname = Faker.Name.FirstName()
-        },
-        new()
-        {
-            Username = Faker.Internet.UserName(),
-            Displayname = Faker.Name.FirstName()
-        },
-        new()
-        {
-            Username = Faker.Internet.UserName(),
-            Displayname = Faker.Name.FirstName()
+            result.Add(new UserForReadDto()
+            {
+                Username = Faker.Internet.UserName(),
+                Displayname = Faker.Name.FirstName()
+            });
         }
-    };
 
-    private static IEnumerable<PostForCreationDto> ValidPostForCreation { get; } = new List<PostForCreationDto>()
+        return result;
+    }
+    
+    private static IEnumerable<PostForCreationDto> GeneratorValidPostForCreation(int lenght)
     {
-        new()
+        var result = new List<PostForCreationDto>();
+        for (int i = 0; i < lenght; i++)
         {
-            Name = Faker.Lorem.Sentence((int)Counts.PostName),
-            Tags = Faker.Commerce.Categories((int)Counts.PostTags).ToList(),
-            Text = Faker.Lorem.Sentences((int)Counts.PostTextSentences)
-        },
-        new()
-        {
-            Name = Faker.Lorem.Sentence((int)Counts.PostName),
-            Tags = Faker.Commerce.Categories((int)Counts.PostTags).ToList(),
-            Text = Faker.Lorem.Sentences((int)Counts.PostTextSentences)
-        },
-        new()
-        {
-            Name = Faker.Lorem.Sentence((int)Counts.PostName),
-            Tags = Faker.Commerce.Categories((int)Counts.PostTags).ToList(),
-            Text = Faker.Lorem.Sentences((int)Counts.PostTextSentences)
-        },
-        new()
-        {
-            Name = Faker.Lorem.Sentence((int)Counts.PostName),
-            Tags = Faker.Commerce.Categories((int)Counts.PostTags).ToList(),
-            Text = Faker.Lorem.Sentences((int)Counts.PostTextSentences)
-        },
-        new()
-        {
-            Name = Faker.Lorem.Sentence((int)Counts.PostName),
-            Tags = Faker.Commerce.Categories((int)Counts.PostTags).ToList(),
-            Text = Faker.Lorem.Sentences((int)Counts.PostTextSentences)
+            result.Add(new PostForCreationDto()
+            {
+                Name = Faker.Lorem.Sentence((int)Counts.PostName),
+                Tags = Faker.Commerce.Categories((int)Counts.PostTags).ToList(),
+                Text = Faker.Lorem.Sentences((int)Counts.PostTextSentences)
+            });
         }
-    };
+
+        return result;
+    }
+    #endregion
+
+
+    #region Properties
+
+    private static IEnumerable<UserForReadDto> ValidUserForRead { get; } = GeneratorValidUserForRead(5);
+
+    private static IEnumerable<PostForCreationDto> ValidPostForCreation { get; } = GeneratorValidPostForCreation(5);
 
     private static IEnumerable<UserForReadDto> NullAndEmptyUser { get; } = new List<UserForReadDto>()
     {
@@ -132,14 +110,17 @@ internal static class CreatePostDataTests
         },
         new()
         {
-            Name = Faker.Lorem.Sentence(2),
+            Name = Faker.Lorem.Sentence(4),
             Tags = Faker.Commerce.Categories(11).ToList(),
             Text = Faker.Lorem.Sentences(3)
         }
         
     };
 
+    #endregion
     
+    // in all iterators use equal lenght of zipping objects
+    #region Iterators
     public static IEnumerable<object[]> GetValidPostAndUser()
     {
         foreach (var (post, user) in ValidPostForCreation.Zip(ValidUserForRead))
@@ -172,4 +153,5 @@ internal static class CreatePostDataTests
             };
         }
     }
+    #endregion
 }
