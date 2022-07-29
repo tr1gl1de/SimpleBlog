@@ -6,6 +6,13 @@ using Contracts.UserDto;
 
 namespace Tests.ServicesTests.PostServiceTests;
 
+internal enum Counts
+{
+    PostName = 2,
+    PostTextSentences = 3,
+    PostTags = 2
+}
+
 internal static class CreatePostDataTests
 {
     private static readonly Faker Faker = new("en");
@@ -43,33 +50,33 @@ internal static class CreatePostDataTests
     {
         new()
         {
-            Name = Faker.Lorem.Sentence(3),
-            Tags = Faker.Commerce.Categories(2).ToList(),
-            Text = Faker.Lorem.Sentences(3)
+            Name = Faker.Lorem.Sentence((int)Counts.PostName),
+            Tags = Faker.Commerce.Categories((int)Counts.PostTags).ToList(),
+            Text = Faker.Lorem.Sentences((int)Counts.PostTextSentences)
         },
         new()
         {
-            Name = Faker.Lorem.Sentence(3),
-            Tags = Faker.Commerce.Categories(2).ToList(),
-            Text = Faker.Lorem.Sentences(3)
+            Name = Faker.Lorem.Sentence((int)Counts.PostName),
+            Tags = Faker.Commerce.Categories((int)Counts.PostTags).ToList(),
+            Text = Faker.Lorem.Sentences((int)Counts.PostTextSentences)
         },
         new()
         {
-            Name = Faker.Lorem.Sentence(3),
-            Tags = Faker.Commerce.Categories(2).ToList(),
-            Text = Faker.Lorem.Sentences(3)
+            Name = Faker.Lorem.Sentence((int)Counts.PostName),
+            Tags = Faker.Commerce.Categories((int)Counts.PostTags).ToList(),
+            Text = Faker.Lorem.Sentences((int)Counts.PostTextSentences)
         },
         new()
         {
-            Name = Faker.Lorem.Sentence(3),
-            Tags = Faker.Commerce.Categories(2).ToList(),
-            Text = Faker.Lorem.Sentences(3)
+            Name = Faker.Lorem.Sentence((int)Counts.PostName),
+            Tags = Faker.Commerce.Categories((int)Counts.PostTags).ToList(),
+            Text = Faker.Lorem.Sentences((int)Counts.PostTextSentences)
         },
         new()
         {
-            Name = Faker.Lorem.Sentence(3),
-            Tags = Faker.Commerce.Categories(2).ToList(),
-            Text = Faker.Lorem.Sentences(3)
+            Name = Faker.Lorem.Sentence((int)Counts.PostName),
+            Tags = Faker.Commerce.Categories((int)Counts.PostTags).ToList(),
+            Text = Faker.Lorem.Sentences((int)Counts.PostTextSentences)
         }
     };
 
@@ -102,25 +109,25 @@ internal static class CreatePostDataTests
         new()
         {
             Name = "",
-            Tags = Faker.Commerce.Categories(2).ToList(),
-            Text = Faker.Lorem.Sentences(3)
+            Tags = Faker.Commerce.Categories((int)Counts.PostTags).ToList(),
+            Text = Faker.Lorem.Sentences((int)Counts.PostTextSentences)
         },
         new()
         {
             Name  = null,
-            Tags = Faker.Commerce.Categories(2).ToList(),
-            Text = Faker.Lorem.Sentences(3) 
+            Tags = Faker.Commerce.Categories((int)Counts.PostTags).ToList(),
+            Text = Faker.Lorem.Sentences((int)Counts.PostTextSentences) 
         },
         new()
         {
-            Name  = Faker.Lorem.Sentence(2),
-            Tags = Faker.Commerce.Categories(2).ToList(),
+            Name  = Faker.Lorem.Sentence((int)Counts.PostName),
+            Tags = Faker.Commerce.Categories((int)Counts.PostTags).ToList(),
             Text = ""
         },
         new()
         {
-            Name  = Faker.Lorem.Sentence(2),
-            Tags = Faker.Commerce.Categories(2).ToList(),
+            Name  = Faker.Lorem.Sentence((int)Counts.PostName),
+            Tags = Faker.Commerce.Categories((int)Counts.PostTags).ToList(),
             Text = null
         },
         new()
@@ -135,11 +142,7 @@ internal static class CreatePostDataTests
     
     public static IEnumerable<object[]> GetInvalidUserAndValidPost()
     {
-        // if (ValidPostForCreation.Count() != ValidUserForRead.Count())
-        // {
-        //     yield break;
-        // }
-        foreach ((PostForCreationDto post, UserForReadDto user) in ValidPostForCreation.Zip(NullAndEmptyUser))
+        foreach (var (post, user) in ValidPostForCreation.Zip(NullAndEmptyUser))
         {
             yield return new object[]
             {
@@ -150,7 +153,7 @@ internal static class CreatePostDataTests
 
     public static IEnumerable<object[]> GetInvalidPostAndValidUser()
     {
-        foreach ((PostForCreationDto post, UserForReadDto user) in NullAndEmptyPost.Zip(ValidUserForRead))
+        foreach (var (post, user) in NullAndEmptyPost.Zip(ValidUserForRead))
         {
             yield return new object[]
             {
