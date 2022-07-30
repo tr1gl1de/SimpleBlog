@@ -34,19 +34,21 @@ public class GetPostByIdTests
             Name = "test",
             Text = "Some text",
             UsernameCreator = "username",
+            CreateDate = DateTime.UtcNow.Date
         };
         var returnedPost = new Post()
         {
             Id = testGuid,
             Name = expectedPostForRead.Name,
             Text = expectedPostForRead.Text,
-            UsernameCreator = expectedPostForRead.UsernameCreator
+            UsernameCreator = expectedPostForRead.UsernameCreator,
+            CreateDate = DateTime.UtcNow.Date
         };
         _mockRepos.Setup(manager => manager.PostRepository.GetPostByIdAsync(testGuid, default))
             .ReturnsAsync(returnedPost);
         // Act
         var result = await _postService.GetPostByIdAsync(testGuid);
         // Assert
-        Assert.Equal(expectedPostForRead, result);
+        TestUtils.AssertAllPropertiesEqual(expectedPostForRead, result);
     }
 }
