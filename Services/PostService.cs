@@ -1,5 +1,6 @@
 ﻿using Contracts.PostDto;
 using Contracts.UserDto;
+using Entities.Exceptions.PostExceptions;
 using Entities.Models;
 using EntityValidators;
 using FluentValidation;
@@ -32,9 +33,15 @@ public class PostService : IPostService
         return post.Adapt<PostForReadDto>();
     }
 
-    public Task<PostForReadDto> GetPostByIdAsync(Guid postId, CancellationToken cancellationToken = default)
+    public async Task<PostForReadDto> GetPostByIdAsync(Guid postId, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var post = await _repositoryManager.PostRepository.GetPostByIdAsync(postId, cancellationToken);
+        if (post is null)
+        {
+            throw new PostNotFoundExceptions(postId);
+        }
+        var result = post.Adapt<PostForReadDto>();
+        return result;
     }
 
     public Task<IEnumerable<PostForReadDto>> GetAllPostsAsync(CancellationToken cancellationToken = default)
