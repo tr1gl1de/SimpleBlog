@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Tests.ServicesTests.PostServiceTests.GetPostByIdTests;
 
-internal class GetPostByIdDataTests
+internal static class GetPostByIdDataTests
 {
     private static readonly IEnumerable<Guid> _validGuids = GeneratorValidGuid(3);
     
