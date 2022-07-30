@@ -4,7 +4,7 @@ namespace Repositories;
 
 public interface IPostRepository
 {
-    Task<Post> GetPostByIdAsync(Guid postId, CancellationToken cancellationToken = default);
+    Task<Post?> GetPostByIdAsync(Guid postId, CancellationToken cancellationToken = default);
 
     Task<IEnumerable<Post>> GetPostsAsync(CancellationToken cancellationToken = default);
 
