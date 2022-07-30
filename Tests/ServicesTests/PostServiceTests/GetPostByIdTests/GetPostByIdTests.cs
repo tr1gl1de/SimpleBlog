@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Contracts.PostDto;
+using Entities.Exceptions.PostExceptions;
 using Entities.Models;
 using EntityValidators;
 using Moq;
@@ -50,5 +51,22 @@ public class GetPostByIdTests
         var result = await _postService.GetPostByIdAsync(testGuid);
         // Assert
         TestUtils.AssertAllPropertiesEqual(expectedPostForRead, result);
+    }
+
+    [Theory]
+    [MemberData(nameof(GetPostByIdDataTests.GetValidGuids), MemberType = typeof(GetPostByIdDataTests))]
+    public async Task GetPostById_InputNotExistGuid_ReturnNotFoundException(Guid testGuid)
+    {
+        // Arrange
+
+        _mockRepos.Setup(manager => manager.PostRepository.GetPostByIdAsync(testGuid, default))
+            .ReturnsAsync((Post?) null);
+        // Act
+        Func<Task> throwingException = async () =>
+        {
+            await _postService.GetPostByIdAsync(testGuid);
+        };
+        // Assert
+        await Assert.ThrowsAsync<PostNotFoundExceptions>(throwingException);
     }
 }
