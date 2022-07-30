@@ -4,7 +4,7 @@ using Bogus;
 using Contracts.PostDto;
 using Contracts.UserDto;
 
-namespace Tests.ServicesTests.PostServiceTests;
+namespace Tests.ServicesTests.PostServiceTests.CreatePostTests;
 
 internal enum Counts
 {

@@ -11,7 +11,7 @@ using Services;
 using Services.Abstract;
 using Xunit;
 
-namespace Tests.ServicesTests.PostServiceTests;
+namespace Tests.ServicesTests.PostServiceTests.CreatePostTests;
 
 public class CreatePostTests
 {
