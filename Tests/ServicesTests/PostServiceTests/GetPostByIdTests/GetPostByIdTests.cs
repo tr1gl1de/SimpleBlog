@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Contracts.PostDto;
-using Entities.Exceptions.PostExceptions;
+using Entities.Exceptions.CustomExceptions.PostExceptions;
 using Entities.Models;
 using EntityValidators;
 using Moq;

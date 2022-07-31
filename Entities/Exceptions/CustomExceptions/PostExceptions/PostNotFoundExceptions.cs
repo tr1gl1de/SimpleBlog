@@ -1,4 +1,6 @@
-﻿namespace Entities.Exceptions.PostExceptions;
+﻿using Entities.Exceptions.BaseExceptions;
+
+namespace Entities.Exceptions.CustomExceptions.PostExceptions;
 
 public sealed class PostNotFoundExceptions : NotFoundException
 {

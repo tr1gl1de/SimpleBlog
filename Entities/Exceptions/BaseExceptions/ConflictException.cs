@@ -1,4 +1,4 @@
-﻿namespace Entities.Exceptions;
+﻿namespace Entities.Exceptions.BaseExceptions;
 
 public abstract class ConflictException : Exception
 {

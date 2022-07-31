@@ -1,4 +1,6 @@
-﻿namespace Entities.Exceptions.UserExceptions;
+﻿using Entities.Exceptions.BaseExceptions;
+
+namespace Entities.Exceptions.CustomExceptions.UserExceptions;
 
 public sealed class UserIsRegisteredException : ConflictException
 {

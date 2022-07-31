@@ -1,4 +1,6 @@
-﻿namespace Entities.Exceptions.CommentExceptions;
+﻿using Entities.Exceptions.BaseExceptions;
+
+namespace Entities.Exceptions.CustomExceptions.CommentExceptions;
 
 public class CommentDoesNotBelongToUserException : BadRequestException
 {

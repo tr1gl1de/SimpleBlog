@@ -1,6 +1,6 @@
 ﻿using Contracts.PostDto;
 using Contracts.UserDto;
-using Entities.Exceptions.PostExceptions;
+using Entities.Exceptions.CustomExceptions.PostExceptions;
 using Entities.Models;
 using EntityValidators;
 using FluentValidation;
