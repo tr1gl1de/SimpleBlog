@@ -35,6 +35,10 @@ public class PostService : IPostService
 
     public async Task<PostForReadDto> GetPostByIdAsync(Guid postId, CancellationToken cancellationToken = default)
     {
+        if (postId == Guid.Empty)
+        {
+            throw new PostNotValidGuidException();
+        }
         var post = await _repositoryManager.PostRepository.GetPostByIdAsync(postId, cancellationToken);
         if (post is null)
         {
