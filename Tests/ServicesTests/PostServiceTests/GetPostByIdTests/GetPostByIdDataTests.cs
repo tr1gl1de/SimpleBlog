@@ -5,7 +5,7 @@ namespace Tests.ServicesTests.PostServiceTests.GetPostByIdTests;
 
 internal static class GetPostByIdDataTests
 {
-    private static readonly IEnumerable<Guid> _validGuids = GeneratorValidGuid(3);
+    private static readonly IEnumerable<Guid> ValidGuids = GeneratorValidGuid(3);
     
     private static IEnumerable<Guid> GeneratorValidGuid(int lenght)
     {
@@ -21,7 +21,7 @@ internal static class GetPostByIdDataTests
 
     public static IEnumerable<object[]> GetValidGuids()
     {
-        foreach (var validGuid in _validGuids)
+        foreach (var validGuid in ValidGuids)
         {
             yield return new object[]
             {
