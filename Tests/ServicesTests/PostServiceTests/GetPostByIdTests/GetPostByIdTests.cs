@@ -69,4 +69,20 @@ public class GetPostByIdTests
         // Assert
         await Assert.ThrowsAsync<PostNotFoundExceptions>(throwingException);
     }
+
+    [Fact]
+    public async Task GetPostById_InputEmptyGuid_ReturnNotFoundException()
+    {
+        // Arrange
+        var testGuid = Guid.Empty;
+        _mockRepos.Setup(manager => manager.PostRepository.GetPostByIdAsync(testGuid, default))
+            .ReturnsAsync((Post?) null);
+        // Act
+        Func<Task> throwingException = async () =>
+        {
+            await _postService.GetPostByIdAsync(testGuid);
+        };
+        // Assert
+        await Assert.ThrowsAsync<PostNotValidGuidException>(throwingException);
+    }
 }
