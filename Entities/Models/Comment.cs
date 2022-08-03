@@ -8,7 +8,7 @@ public class Comment
     public DateTime CreateDate { get; set; } = DateTime.UtcNow;
     public DateTime? UpdateDate { get; set; }
     public string Text { get; set; } = string.Empty;
-    public int LikesCount { get; set; } = 0;
+    public uint LikesCount { get; set; } = 0;
     public Guid? ParentCommentId { get; set; }
     public List<Comment>? ChildrenComments { get; set; }
 }

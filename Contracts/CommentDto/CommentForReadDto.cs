@@ -7,7 +7,7 @@ public class CommentForReadDto
     public DateTime CreateDate { get; set; }
     public DateTime? UpdateDate { get; set; }
     public string Text { get; set; } = string.Empty;
-    public int LikesCount { get; set; }
+    public uint LikesCount { get; set; }
     public Guid? ParentCommentId { get; set; }
     public List<CommentForReadDto>? ChildrenComments { get; set; }
 }
